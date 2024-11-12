@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# Configurações fixas
+SERVER="mastertechnet.online"
+USER="DragonSCP"
+PASSWORD="1234"
+
+# Função para conexão SSH
+ssh_connect() {
+    echo "Tentando conectar ao servidor SSH..."
+    sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USER@$SERVER" -p 22
+}
+
+# Função para configurar a conexão Proxy
+setup_proxy() {
+    echo "Escolha a operadora:"
+    echo "1 - Claro"
+    echo "2 - Vivo"
+    echo "3 - TIM"
+    read -p "Escolha a operadora (1/2/3): " operadora
+
+    case $operadora in
+        1)
+            echo "Você escolheu Claro."
+            proxy="revive.timrecompensas.com.br"
+            port="80"
+            ;;
+        2)
+            echo "Você escolheu Vivo."
+            proxy="portal.vivo.com.br"
+            port="8080"
+            ;;
+        3)
+            echo "Você escolheu TIM."
+            proxy="portal.tim.com.br"
+            port="8080"
+            ;;
+        *)
+            echo "Operadora inválida!"
+            exit 1
+            ;;
+    esac
+
+    # Configurações de Payload e Proxy para a operadora escolhida
+    echo "Configuração de Payload para Proxy $proxy na porta $port"
+    read -p "Deseja fornecer uma configuração personalizada de Payload? (s/n): " custom_payload
+    if [[ "$custom_payload" == "s" || "$custom_payload" == "S" ]]; then
+        read -p "Digite sua configuração de Payload: " payload
+    else
+        case $operadora in
+            1)
+                payload="[delay_split][lf]GET / HTTP/1.1[lf]Host: revive.timrecompensas.com.br[crlf][crlf]"
+                ;;
+            2)
+                payload="[delay_split] ACL / HTTP/1.1[crlf]Host:[random=vivoproxy.gdmnet.pro][crlf]Connection: Upgrade[crlf]Upgrade: Websocket[crlf][crlf]"
+                ;;
+            3)
+                payload="[split][lf]ACL \/ HTTP\/1.1[crlf]Host: portalrecarga.vivo.com.br[crlf]Upgrade: Upgrade[crlf]Connection: [crlf][crlf]"
+                ;;
+        esac
+    fi
+
+    echo "Proxy configurado: $proxy"
+    echo "Payload configurado: $payload"
+    echo "Conectando ao proxy... (em modo SSH)"
+    ssh_connect
+}
+
+# Função para configurar o tipo de conexão
+setup_connection_type() {
+    echo "Escolha o modo de conexão:"
+    echo "1 - Direct"
+    echo "2 - SSL"
+    read -p "Escolha o tipo de conexão (1/2): " connection_type
+
+    case $connection_type in
+        1)
+            echo "Modo de conexão: Direct"
+            ssh_connect
+            ;;
+        2)
+            echo "Modo de conexão: SSL"
+            # Aqui você pode configurar as opções específicas para SSL
+            echo "Configurando SSL..."
+            ssh_connect
+            ;;
+        *)
+            echo "Opção inválida!"
+            exit 1
+            ;;
+    esac
+}
+
+# Função principal do script
+main() {
+    echo "Bem-vindo ao script de teste de proxy SSH!"
+    setup_connection_type
+}
+
+# Executando o script
+main
