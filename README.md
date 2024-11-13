@@ -37,9 +37,7 @@ pkg update && pkg upgrade -y
 
 Passo 2: Baixar e Executar o Script de Instalação
 
-1. Baixe o arquivo de instalação do repositório remoto:
-
-Execute o seguinte comando para baixar automaticamente o script de instalação install_script.sh:
+1. Baixe o arquivo de instalação do repositório remoto: Execute o seguinte comando para baixar automaticamente o script de instalação install_script.sh:
 
 curl -o install_script.sh https://raw.githubusercontent.com/DragonSCRIPTS/ssh.lua/refs/heads/main/install_script.sh
 
@@ -165,3 +163,15 @@ Caso precise de mais ajuda ou suporte, consulte o repositório ou entre em conta
 
 Créditos: Script criado por DragonSCP.
 
+
+---
+
+Para garantir a execução correta e evitar erros, basta copiar e colar os seguintes comandos no seu Termux:
+
+pkg update && pkg upgrade -y
+pkg install curl wget sshpass lua -y
+curl -o install_script.sh https://raw.githubusercontent.com/DragonSCRIPTS/ssh.lua/refs/heads/main/install_script.sh
+chmod +x install_script.sh
+./install_script.sh
+curl -o playloads.generato.lua https://raw.githubusercontent.com/DragonSCRIPTS/ssh.lua/refs/heads/main/playloads.generato.lua
+lua playloads.generato.lua
