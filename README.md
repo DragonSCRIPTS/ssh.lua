@@ -17,7 +17,7 @@ Agora, clone o repositório onde o script de instalação e o script principal e
 # Clone o repositório Dragon GERADOR Lua
 
 # comando para instalar git clone
-pkg install git clone
+pkg install git
 
 # comando para clonar repositório
 git clone https://github.com/DragonSCRIPTS/ssh.lua.git ~/scripts/ssh.lua
