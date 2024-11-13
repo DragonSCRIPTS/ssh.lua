@@ -47,14 +47,32 @@ pkg install -y python
 # Instalar pacotes extras de segurança, como OpenSSH (para conexões SSH)
 pkg install -y openssh
 
-# Instalando o sshpass (para facilitar a automação de senhas em SSH)
-pkg install -y sshpass
-
 # Garantir que o diretório onde os scripts serão salvos existe
 mkdir -p ~/scripts
 
-# Baixar o script remoto de payload
+# Clonando o repositório
+echo "Clonando o repositório do Dragon GERADOR Lua..."
+git clone https://github.com/DragonSCRIPTS/ssh.lua.git ~/scripts/ssh.lua
+
+# Acessando o diretório do repositório clonado
+cd ~/scripts/ssh.lua
+
+# Garantir que o script tenha permissões de execução
+chmod +x install_script.sh
+
+# Executando o script de instalação
+echo "Executando o script de instalação..."
+./install_script.sh
+
+# Baixando o script remoto de payload
 echo "Baixando o script remoto de payload..."
 curl -o ~/scripts/playloads.generato.lua https://raw.githubusercontent.com/DragonSCRIPTS/ssh.lua/refs/heads/main/playloads.generato.lua
 
-echo "Instalação concluída. Você pode executar o script usando './your_script_name.sh'."
+# Garantir que o script principal tenha permissões de execução
+chmod +x playloads.generato.lua
+
+# Executando o script principal automaticamente
+echo "Executando o script principal..."
+lua playloads.generato.lua
+
+echo "Instalação e execução do script concluídas com sucesso!"
